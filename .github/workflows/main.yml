@@ -11,11 +11,11 @@ jobs:
       - uses: actions/checkout@v4
       - name: Download Launcher Tarball
         run: |
-          curl -L -o launcher-linux-arm64.tar.gz "https://github.com/discourse/launcher/releases/download/v2.0.1/launcher-linux-arm64.tar.gz"
+          curl -L -o launcher-linux-amd64.tar.gz "https://github.com/discourse/launcher/releases/download/v2.0.1/launcher-linux-amd64.tar.gz"
           
       - name: Extract Launcher
         run: |
-          tar -xzvf launcher-linux-arm64.tar.gz
+          tar -xzvf launcher-linux-amd64.tar.gz
       
       - name: Make Executable (if needed)
         run: |
