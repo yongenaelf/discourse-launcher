@@ -35,13 +35,13 @@ jobs:
           echo "short_sha=$calculatedSha" >> "$GITHUB_OUTPUT"
 
       - name: Tag Docker Image
-        run: docker tag docker.io/local_discourse/web_only:latest ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:sha-${{ steps.vars.outputs.short_sha }}
+        run: docker tag docker.io/local_discourse/web_only:latest ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:sha-${{ steps.vars.outputs.short_sha }}
 
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Push Docker Image
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:sha-${{ steps.vars.outputs.short_sha }}
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:sha-${{ steps.vars.outputs.short_sha }}
