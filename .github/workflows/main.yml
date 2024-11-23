@@ -26,7 +26,6 @@ jobs:
       - name: Build Discourse
         run: |
           ./launcher build web_only
-          ./launcher start-cmd web_only
 
       - name: Set short git commit SHA
         id: vars
