@@ -1,4 +1,4 @@
-name: Go
+name: aelf discourse
 
 on: [push]
 
@@ -6,6 +6,8 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    env:
+      IMAGE_NAME: aelf-discourse
 
     steps:
       - uses: actions/checkout@v4
@@ -24,3 +26,21 @@ jobs:
       - name: Build Discourse
         run: |
           ./launcher build web_only
+
+      - name: Set short git commit SHA
+        id: vars
+        run: |
+          calculatedSha=$(git rev-parse --short ${{ github.sha }})
+          echo "short_sha=$calculatedSha" >> "$GITHUB_OUTPUT"
+
+      - name: Tag Docker Image
+        run: docker tag docker.io/local_discourse/web_only:latest ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:sha-${{ steps.vars.outputs.short_sha }}
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      - name: Push Docker Image
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:sha-${{ steps.vars.outputs.short_sha }}
